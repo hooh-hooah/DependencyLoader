@@ -12,6 +12,7 @@ namespace HS2_DependencyLoader
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Scene.Data), nameof(Scene.Data.Load))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
+        // ReSharper disable once UnusedMember.Global
         public static void SceneLoad(Scene.Data __instance)
         {
             Dependency.LoadDependency(__instance.bundleName);
@@ -20,6 +21,7 @@ namespace HS2_DependencyLoader
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AddObjectItem), "GetLoadInfo")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
+        // ReSharper disable once UnusedMember.Global
         public static void GetLoadInfo(int _group, int _category, int _no)
         {
 	        if (!Singleton<Info>.Instance.dicVoiceLoadInfo.TryGetValue(_group, out var dictionary))

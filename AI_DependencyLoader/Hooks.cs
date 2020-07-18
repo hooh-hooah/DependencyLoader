@@ -10,7 +10,8 @@ namespace AI_DependencyLoader
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Scene.Data), nameof(Scene.Data.Load))]
-        // ReSharper disable once InconsistentNaming
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        // ReSharper disable once UnusedMember.Global
         public static void SceneLoad(Scene.Data __instance)
         {
             Dependency.LoadDependency(__instance.assetBundleName);
@@ -19,7 +20,7 @@ namespace AI_DependencyLoader
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AddObjectItem), "GetLoadInfo")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        // ReSharper disable once InconsistentNaming
+        // ReSharper disable once UnusedMember.Global
         public static void GetLoadInfo(int _group, int _category, int _no)
         {
             if (!Singleton<Info>.Instance.dicItemLoadInfo.TryGetValue(_group, out var dictionary))

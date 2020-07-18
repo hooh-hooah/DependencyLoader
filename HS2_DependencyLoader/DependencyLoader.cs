@@ -9,7 +9,7 @@ namespace HS2_DependencyLoader
     [BepInPlugin(Guid, "HS2_DependencyLoader", Version)]
     public class DependencyLoader : BaseUnityPlugin
     {
-        private const string Guid = "com.hooh.hs2.animpari";
+        private const string Guid = "com.hooh.hs2.deploader";
         private const string Version = "1.0.0";
 
         public DependencyLoader Instance { get; set; }
