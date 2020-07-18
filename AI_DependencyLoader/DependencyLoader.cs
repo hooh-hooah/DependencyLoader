@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using IL_DependencyLoader;
 using KKAPI;
 using KKAPI.Studio;
 using static BepInEx.Harmony.HarmonyWrapper;
@@ -16,6 +17,9 @@ namespace AI_DependencyLoader
         {
             if (!StudioAPI.InsideStudio) return;
             PatchAll(typeof(GameHooks));
+
+            GameHooks.Logger = Logger;
+            Dependency.Logger = Logger;
         }
     }
 }

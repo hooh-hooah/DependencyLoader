@@ -11,6 +11,9 @@
         <AssemblyName>AI_DependencyLoader</AssemblyName>
         <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>AI_DependencyLoader.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>false</PublicSign>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,6 +41,10 @@
         </Reference>
         <Reference Include="AIAPI, Version=1.12.3.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\IllusionModdingAPI.AIAPI.1.12.3\lib\net46\AIAPI.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
+        <Reference Include="AI_Sideloader, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Sideloader.AIGirl.15.1.2\lib\net46\AI_Sideloader.dll</HintPath>
           <Private>True</Private>
         </Reference>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -94,6 +101,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="AI_DependencyLoader.snk" />
       <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

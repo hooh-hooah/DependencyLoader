@@ -1,27 +1,18 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+using BepInEx.Logging;
 using UnityEngine;
 
 namespace IL_DependencyLoader
 {
-    public class Dependency
+    public static class Dependency
     {
         private const string ManifestAssetName = "AssetBundleManifest";
-        private const string PathSplitPattern = @"[\\\/]";
-
-        private static string GuessManifestName(string bundlePath)
-        {
-            if (bundlePath.IsNullOrEmpty() || bundlePath.IsNullOrWhiteSpace()) return null;
-
-            var possibleManifest = Regex.Split(bundlePath, PathSplitPattern).FirstOrDefault(x => x.Length > 0);
-            if (possibleManifest.IsNullOrEmpty() || possibleManifest.IsNullOrWhiteSpace()) return null;
-
-            return possibleManifest;
-        }
+        public static ManualLogSource Logger { get; set; }
 
         private static AssetBundleManifest GetManifest(string manifestPath)
         {
-            var bundlePath = $"{manifestPath}/{manifestPath}.unity3d";
+            var bundlePath = $"{manifestPath}.unity3d";
             var bundle = AssetBundleManager.LoadAsset(bundlePath, ManifestAssetName, typeof(AssetBundleManifest), "");
             if (bundle.IsEmpty()) return null;
 
@@ -33,26 +24,25 @@ namespace IL_DependencyLoader
 
         private static void LoadDependency(string bundleName, string manifestName, AssetBundleManifest asset)
         {
-            var manifestPathAdjustment = $"{manifestName}/";
-            asset.GetAllDependencies(bundleName.Replace(manifestPathAdjustment, "")).ToList().ForEach(depBundle =>
+            asset.GetAllDependencies(bundleName).ToList().ForEach(depBundle =>
             {
                 #if HS2
-                    AssetBundleManager.LoadAssetBundle(manifestPathAdjustment + depBundle);
+                    AssetBundleManager.LoadAssetBundle(depBundle);
                 #else
-                    AssetBundleManager.LoadAssetBundle(manifestPathAdjustment + depBundle, false);
+                    AssetBundleManager.LoadAssetBundle(depBundle, false);
                 #endif
             });
         }
 
-        public static void LoadDependency(string bundlePath)
+        public static void LoadDependency(string bundlePath, string manifestName)
         {
-            var possibleManifest = GuessManifestName(bundlePath);
-            if (possibleManifest.IsNullOrEmpty() || possibleManifest.IsNullOrWhiteSpace()) return;
+            Logger.LogDebug($"Trying to load dependency of {bundlePath}");
+            if (manifestName.IsNullOrEmpty() || manifestName.IsNullOrWhiteSpace()) return;
 
-            var manifestAsset = GetManifest(possibleManifest);
+            var manifestAsset = GetManifest(manifestName);
             if (manifestAsset == null) return;
 
-            LoadDependency(bundlePath, possibleManifest, manifestAsset);
+            LoadDependency(bundlePath, manifestName, manifestAsset);
         }
     }
 }

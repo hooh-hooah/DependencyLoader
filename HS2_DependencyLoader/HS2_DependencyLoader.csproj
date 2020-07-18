@@ -11,6 +11,8 @@
         <AssemblyName>HS2_DependencyLoader</AssemblyName>
         <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <SignAssembly>true</SignAssembly>
+        <AssemblyOriginatorKeyFile>HS2_DependencyLoader.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,6 +58,10 @@
           <HintPath>..\packages\IllusionModdingAPI.HS2API.1.12.3\lib\net46\HS2API.dll</HintPath>
           <Private>True</Private>
         </Reference>
+        <Reference Include="HS2_Sideloader, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Sideloader.HoneySelect2.15.1.2\lib\net46\HS2_Sideloader.dll</HintPath>
+          <Private>True</Private>
+        </Reference>
         <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
           <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
           <Private>True</Private>
@@ -74,6 +80,9 @@
         <Reference Include="UniRx, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\IllusionLibs.HoneySelect2.UniRx.2020.5.29\lib\net46\UniRx.dll</HintPath>
           <Private>True</Private>
+        </Reference>
+        <Reference Include="UniRx.Async, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\suqa\StudioNEOV2_Data\Managed\UniRx.Async.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\IllusionLibs.HoneySelect2.UnityEngine.CoreModule.2018.4.11\lib\net46\UnityEngine.dll</HintPath>
@@ -107,9 +116,11 @@
     <ItemGroup>
         <Compile Include="DependencyLoader.cs" />
         <Compile Include="Hooks.cs" />
+        <Compile Include="ManifestParser.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
+      <None Include="HS2_DependencyLoader.snk" />
       <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
