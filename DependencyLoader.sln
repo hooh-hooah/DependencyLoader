@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI_DependencyLoader", "AI_DependencyLoader\AI_DependencyLoader.csproj", "{80DBE848-36FD-4D28-8BDC-A2A8008119A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HS2_DependencyLoader", "HS2_DependencyLoader\HS2_DependencyLoader.csproj", "{7EACC1C9-46C0-4882-8E4B-C7B8CF972AB8}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "IL_DependencyLoader", "IL_DependencyLoader\IL_DependencyLoader.shproj", "{D06923E4-684A-497B-9807-B3C9F9CEE8E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80DBE848-36FD-4D28-8BDC-A2A8008119A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80DBE848-36FD-4D28-8BDC-A2A8008119A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80DBE848-36FD-4D28-8BDC-A2A8008119A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80DBE848-36FD-4D28-8BDC-A2A8008119A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EACC1C9-46C0-4882-8E4B-C7B8CF972AB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EACC1C9-46C0-4882-8E4B-C7B8CF972AB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EACC1C9-46C0-4882-8E4B-C7B8CF972AB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EACC1C9-46C0-4882-8E4B-C7B8CF972AB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
