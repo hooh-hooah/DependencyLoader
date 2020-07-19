@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Text.RegularExpressions;
-using BepInEx.Logging;
 using UnityEngine;
 
 namespace IL_DependencyLoader
@@ -8,41 +6,43 @@ namespace IL_DependencyLoader
     public static class Dependency
     {
         private const string ManifestAssetName = "AssetBundleManifest";
-        public static ManualLogSource Logger { get; set; }
 
-        private static AssetBundleManifest GetManifest(string manifestPath)
+        private static bool GetManifest(string manifestPath, out AssetBundleManifest manifest)
         {
-            var bundlePath = $"{manifestPath}.unity3d";
-            var bundle = AssetBundleManager.LoadAsset(bundlePath, ManifestAssetName, typeof(AssetBundleManifest), "");
-            if (bundle.IsEmpty()) return null;
+            manifest = null;
+            if (manifestPath.IsNullOrEmpty() || manifestPath.IsNullOrWhiteSpace()) return false;
 
-            var manifest = bundle.GetAsset<AssetBundleManifest>();
-            if (manifest == null) return null;
+            var bundle = AssetBundleManager
+                .LoadAsset(
+                    $"{manifestPath}.unity3d",
+                    ManifestAssetName,
+                    typeof(AssetBundleManifest),
+                    ""
+                );
+            if (bundle.IsEmpty()) return false;
 
-            return manifest;
+            var asset = bundle.GetAsset<AssetBundleManifest>();
+            if (asset == null) return false;
+
+            manifest = asset;
+            return true;
         }
 
-        private static void LoadDependency(string bundleName, string manifestName, AssetBundleManifest asset)
+        private static void LoadDependencyAssetBundles(string bundleName, AssetBundleManifest asset)
         {
             asset.GetAllDependencies(bundleName).ToList().ForEach(depBundle =>
             {
-                #if HS2
-                    AssetBundleManager.LoadAssetBundle(depBundle);
-                #else
-                    AssetBundleManager.LoadAssetBundle(depBundle, false);
-                #endif
+#if HS2
+                AssetBundleManager.LoadAssetBundle(depBundle);
+#else
+                AssetBundleManager.LoadAssetBundle(depBundle, false);
+#endif
             });
         }
 
         public static void LoadDependency(string bundlePath, string manifestName)
         {
-            Logger.LogDebug($"Trying to load dependency of {bundlePath}");
-            if (manifestName.IsNullOrEmpty() || manifestName.IsNullOrWhiteSpace()) return;
-
-            var manifestAsset = GetManifest(manifestName);
-            if (manifestAsset == null) return;
-
-            LoadDependency(bundlePath, manifestName, manifestAsset);
+            if (GetManifest(manifestName, out var manifestAsset)) LoadDependencyAssetBundles(bundlePath, manifestAsset);
         }
     }
 }

@@ -1,25 +1,17 @@
 ﻿using BepInEx;
 using IL_DependencyLoader;
-using KKAPI;
-using KKAPI.Studio;
 using static BepInEx.Harmony.HarmonyWrapper;
 
 namespace AI_DependencyLoader
 {
-    [BepInDependency(KoikatuAPI.GUID)]
-    [BepInPlugin(Guid, "AI_DependencyLoader", Version)]
+    [BepInPlugin(Guid, "AI_" + PluginInformation.ReadableName, PluginInformation.Version)]
     public class DependencyLoader : BaseUnityPlugin
     {
-        private const string Guid = "com.hooh.ai.deploader";
-        private const string Version = "1.0.0";
+        private const string Guid = PluginInformation.CommonPrefix + ".ai." + PluginInformation.Name;
 
         private void Awake()
         {
-            if (!StudioAPI.InsideStudio) return;
             PatchAll(typeof(GameHooks));
-
-            GameHooks.Logger = Logger;
-            Dependency.Logger = Logger;
         }
     }
 }

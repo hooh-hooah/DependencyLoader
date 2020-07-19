@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-
+﻿#if REFLECTION_LIB_WIP
 namespace IL_DependencyLoader
 {
     public static class RefUtil
@@ -11,7 +9,7 @@ namespace IL_DependencyLoader
             var field = typeof(T).GetField(fieldName, bindFlags);
             return field.GetValue(null);
         }
-        
+
         public static void SetStaticField<T>(this T obj, string fieldName, object value)
         {
             var bindFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
@@ -22,7 +20,7 @@ namespace IL_DependencyLoader
         public static object GetInstanceField<T>(this T obj, string fieldName)
         {
             return typeof(T)
-                .GetField(fieldName,  BindingFlags.Instance | BindingFlags.NonPublic)?
+                .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)?
                 .GetValue(obj);
         }
 
@@ -32,7 +30,7 @@ namespace IL_DependencyLoader
             if (prop != null) prop.SetValue(obj, value);
             else throw new MissingFieldException($"Field \"{fieldName}\" does not exists.");
         }
-        
+
         public static void PrivateSetter<T>(this T obj, string fieldName, params object[] args)
         {
             typeof(T).GetProperty(fieldName)?.SetMethod.Invoke(obj, args);
@@ -45,3 +43,4 @@ namespace IL_DependencyLoader
         }
     }
 }
+#endif

@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using BepInEx.Logging;
 using HarmonyLib;
 using IL_DependencyLoader;
 using Manager;
 using Studio;
-using UniRx.Async;
 
 namespace HS2_DependencyLoader
 {
     public class GameHooks
     {
-        // Main Game Map Dependency Support
-
         [HarmonyPrefix]
         [HarmonyPatch(typeof(BaseMap), nameof(BaseMap.ChangeAsync), typeof(int), typeof(FadeCanvas.Fade), typeof(bool))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -27,7 +21,8 @@ namespace HS2_DependencyLoader
             Dependency.LoadDependency(info.AssetBundleName, manifest);
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap), typeof(int))]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap), typeof(int))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         // ReSharper disable once UnusedMember.Global
         public static void LoadMap(Studio.Map __instance, int _no)
@@ -50,7 +45,5 @@ namespace HS2_DependencyLoader
             if (!dictionary2.TryGetValue(_no, out var result)) return;
             Dependency.LoadDependency(result.bundlePath, result.manifest);
         }
-
-        public static ManualLogSource Logger { get; set; }
     }
 }
