@@ -9,7 +9,7 @@
     <Import_RootNamespace>IL_DependencyLoader</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CursedList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Cursed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dependency.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RefUtil.cs" />
   </ItemGroup>

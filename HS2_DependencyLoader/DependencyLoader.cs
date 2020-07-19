@@ -18,8 +18,8 @@ namespace HS2_DependencyLoader
             ManifestParser.Logger = Logger;
             Dependency.Logger = Logger;
             
-            ManifestParser.ParseXMLManifests();
-            HarmonyWrapper.PatchAll(typeof(HS2_DependencyLoader.GameHooks));
+            ManifestParser.ParseXmlManifests();
+            HarmonyWrapper.PatchAll(typeof(GameHooks));
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace IL_DependencyLoader
 {
-    public static class CursedList
+    public static class Cursed
     {
         // fucking shit list
         public static readonly Regex cursedRegex = new Regex(@"abdata|add[0-9]+|studio[0-9]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);

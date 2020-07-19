@@ -11,39 +11,17 @@ namespace AI_DependencyLoader
 {
     public class GameHooks
     {
+	    // TODO: Add AI-Syoujyo Map Support. 
+	    
 	    [HarmonyPrefix, HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap))]
         // [SuppressMessage("ReSharper", "InconsistentNaming")]
         // // ReSharper disable once UnusedMember.Global
-		public static bool LoadMap(Studio.Map __instance, int _no)
+		public static void LoadMap(Studio.Map __instance, int _no)
 		{
-			if (!Singleton<Info>.Instance.dicMapLoadInfo.ContainsKey(_no))
-			{
-				__instance.ReleaseMap();
-				return false;
-			}
-			if (__instance.no == _no) return false;
-
-			__instance.PrivateSetter("MapComponent", null);
-			__instance.PrivateSetter("isLoading", true);
-			__instance.PrivateSetter("no", _no);
-			
-			var data = Singleton<Info>.Instance.dicMapLoadInfo[_no];
-			if (!CursedList.IsCursedManifest(data.manifest))
-			{
-				Dependency.LoadDependency(data.bundlePath, data.manifest);
-			}
-			
-			Singleton<Scene>.Instance.LoadBaseScene(new Scene.Data
-			{
-				assetBundleName = data.bundlePath,
-				levelName = data.fileName,
-				fadeType = Scene.Data.FadeType.None,
-				onLoad = delegate
-				{
-					__instance.InvokeMethod("OnLoadAfter", data.fileName);
-				}
-			});
-			return false;
+			if (__instance.no == _no) return;
+			if (!Singleton<Info>.Instance.dicMapLoadInfo.TryGetValue(_no, out var data)) return;
+			if (Cursed.IsCursedManifest(data.manifest)) return;
+			Dependency.LoadDependency(data.bundlePath, data.manifest);
 		}
         
         [HarmonyPostfix]
@@ -52,12 +30,9 @@ namespace AI_DependencyLoader
         // ReSharper disable once UnusedMember.Global
         public static void GetLoadInfo(int _group, int _category, int _no)
         {
-            if (!Singleton<Info>.Instance.dicItemLoadInfo.TryGetValue(_group, out var dictionary))
-                return;
-            if (!dictionary.TryGetValue(_category, out var dictionary2))
-                return;
-            if (!dictionary2.TryGetValue(_no, out var result))
-                return;
+            if (!Singleton<Info>.Instance.dicItemLoadInfo.TryGetValue(_group, out var dictionary)) return;
+            if (!dictionary.TryGetValue(_category, out var dictionary2)) return;
+            if (!dictionary2.TryGetValue(_no, out var result)) return;
 
             Dependency.LoadDependency(result.bundlePath, result.manifest);
         }
