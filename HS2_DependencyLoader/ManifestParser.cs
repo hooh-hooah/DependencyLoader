@@ -47,7 +47,7 @@ namespace HS2_DependencyLoader
         {
             foreach (var document in Sideloader.Sideloader.Manifests.Values.Select(x => x.manifestDocument))
             {
-                var manifests = document?.Root?.Element("hs2-scene-dependency");
+                var manifests = document?.Root?.Element("hs2-scene-dependency") ?? document?.Root?.Element("scene-dependency");
                 if (manifests == null) continue;
                 var manifestFile = manifests.Attribute("manifest")?.Value;
                 if (manifestFile.IsNullOrEmpty() || manifestFile.IsNullOrWhiteSpace()) continue;
