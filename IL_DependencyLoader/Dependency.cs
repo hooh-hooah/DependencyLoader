@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace IL_DependencyLoader
@@ -26,6 +27,15 @@ namespace IL_DependencyLoader
 
             manifest = asset;
             return true;
+        }
+
+        public static void AddAssetBundleManifest(string manifestPath)
+        {
+            if (!GetManifest(manifestPath, out var manifest)) return;
+            var bundlePack = new AssetBundleManager.BundlePack {AssetBundleManifest = manifest};
+            var property = typeof(AssetBundleManager).GetProperty("manifestBundlePack", BindingFlags.NonPublic | BindingFlags.Static);
+            var dict = property.GetValue(null, null);
+            property.PropertyType.GetMethod("Add")?.Invoke(dict, new object[] {manifestPath, bundlePack});
         }
 
         private static void LoadDependencyAssetBundles(string bundleName, AssetBundleManifest asset)

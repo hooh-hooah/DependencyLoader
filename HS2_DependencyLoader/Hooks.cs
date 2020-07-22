@@ -8,7 +8,8 @@ namespace HS2_DependencyLoader
 {
     public class GameHooks
     {
-        [HarmonyPrefix, HarmonyPatch(typeof(BaseMap), nameof(BaseMap.ChangeAsync), typeof(int), typeof(FadeCanvas.Fade), typeof(bool))]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(BaseMap), nameof(BaseMap.ChangeAsync), typeof(int), typeof(FadeCanvas.Fade), typeof(bool))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         // ReSharper disable once UnusedMember.Global
         public static void ChangeAsync(int _no, FadeCanvas.Fade fadeType = FadeCanvas.Fade.InOut, bool isForce = false)
@@ -21,7 +22,8 @@ namespace HS2_DependencyLoader
             Dependency.LoadDependency(info.AssetBundleName, manifest);
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap), typeof(int))]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMap), typeof(int))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         // ReSharper disable once UnusedMember.Global
         public static void LoadMap(Studio.Map __instance, int _no)
@@ -32,7 +34,8 @@ namespace HS2_DependencyLoader
             Dependency.LoadDependency(data.bundlePath, data.manifest);
         }
 
-        [HarmonyPrefix, HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMapCoroutine), typeof(int), typeof(bool))]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Studio.Map), nameof(Studio.Map.LoadMapCoroutine), typeof(int), typeof(bool))]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         // ReSharper disable once UnusedMember.Global
         public static void LoadMap(Studio.Map __instance, int _no, bool _wait)
@@ -40,7 +43,8 @@ namespace HS2_DependencyLoader
             LoadMap(__instance, _no);
         }
 
-        [HarmonyPostfix, HarmonyPatch(typeof(AddObjectItem), "GetLoadInfo")]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AddObjectItem), "GetLoadInfo")]
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         // ReSharper disable once UnusedMember.Global
         public static void GetLoadInfo(int _group, int _category, int _no)
@@ -50,6 +54,15 @@ namespace HS2_DependencyLoader
                 !dictionary2.TryGetValue(_no, out var result) ||
                 Cursed.IsCursedManifest(result.manifest)) return;
             Dependency.LoadDependency(result.bundlePath, result.manifest);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(AssetBundleManager), nameof(AssetBundleManager.Initialize))]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
+        // ReSharper disable once UnusedMember.Global
+        public static void InitializeAssetBundleManager()
+        {
+            ManifestInfo.GetManifests().ForEach(Dependency.AddAssetBundleManifest);
         }
     }
 }

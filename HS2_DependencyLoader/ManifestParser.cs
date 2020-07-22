@@ -9,6 +9,7 @@ namespace HS2_DependencyLoader
     public static class ManifestInfo
     {
         private static readonly Dictionary<string, Dictionary<string, string>> Data = new Dictionary<string, Dictionary<string, string>>();
+        private static readonly List<string> Manifests = new List<string>();
 
         public static bool Get(string bundle, string asset, out string result)
         {
@@ -27,6 +28,17 @@ namespace HS2_DependencyLoader
             if (!Data.ContainsKey(bundle)) Data[bundle] = new Dictionary<string, string>();
             Data[bundle][asset] = manifest;
         }
+
+
+        public static void AddManifest(string manifest)
+        {
+            Manifests.Add(manifest); // all of custom manifests will have unity3d after it.
+        }
+
+        public static List<string> GetManifests()
+        {
+            return Manifests.Distinct().ToList();
+        }
     }
 
     public static class ManifestParser
@@ -39,6 +51,7 @@ namespace HS2_DependencyLoader
                 if (manifests == null) continue;
                 var manifestFile = manifests.Attribute("manifest")?.Value;
                 if (manifestFile.IsNullOrEmpty() || manifestFile.IsNullOrWhiteSpace()) continue;
+                ManifestInfo.AddManifest(manifestFile);
                 foreach (var manifest in manifests.Elements("dependency"))
                 {
                     var bundle = manifest.Attribute("bundle")?.Value;
